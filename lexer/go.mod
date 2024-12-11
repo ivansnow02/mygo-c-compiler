@@ -1,3 +1,3 @@
-module go_compiler/lexer
+module lexer
 
 go 1.23.2

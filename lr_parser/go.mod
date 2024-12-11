@@ -1,4 +1,4 @@
-module rec_des_parser
+module lr_parser
 
 go 1.23.2
 

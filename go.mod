@@ -1,11 +1,15 @@
-module go_compiler
+module mygo_c_compiler
 
 go 1.23.2
 
-require go_compiler/lexer v0.0.0
+require mygo_c_compiler/lexer v0.0.0
 
-replace go_compiler/lexer => ./lexer
+replace mygo_c_compiler/lexer => ./lexer
 
-require go_compiler/rec_des_parser v0.0.0
+require mygo_c_compiler/rec_des_parser v0.0.0
 
-replace go_compiler/rec_des_parser => ./rec_des_parser
+replace mygo_c_compiler/rec_des_parser => ./rec_des_parser
+
+require mygo_c_compiler/lr_parser v0.0.0
+
+replace mygo_c_compiler/lr_parser => ./lr_parser

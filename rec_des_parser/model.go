@@ -1,7 +1,7 @@
 package rec_des_parser
 
 import (
-    "go_compiler/lexer"
+    "mygo_c_compiler/lexer"
 )
 
 type Parser struct {

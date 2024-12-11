@@ -3,8 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
-	parser "go_compiler/rec_des_parser"
-	"go_compiler/lexer"
+	// recDesParser "mygo_c_compiler/rec_des_parser"
+    lRParser "mygo_c_compiler/lr_parser"
+	"mygo_c_compiler/lexer"
 	"os"
 	"strings"
 )
@@ -85,13 +86,21 @@ func main() {
     }
 
     // 语法分析
-    fmt.Println("\n语法分析结果:")
-    grammar := parser.New()
-    defer func() {
-        if r := recover(); r != nil {
-            fmt.Printf("语法错误: %v\n", r)
-        }
-    }()
-    grammar.Parse(sourceCode.String())
+    // fmt.Println("\n递归下降语法分析结果:")
+    // grammar := recDesParser.New()
+    // defer func() {
+    //     if r := recover(); r != nil {
+    //         fmt.Printf("语法错误: %v\n", r)
+    //     }
+    // }()
+    // grammar.Parse(sourceCode.String())
+
+
+    fmt.Println("\nLR(0)语法分析结果:")
+    lrParser := lRParser.New()
+    lrParser.PrintItemSets("items.txt")
+    lrParser.PrintParsingTable()
+    lrParser.Parse(tokens)
+
     fmt.Println("语法分析通过")
 }

@@ -2,6 +2,7 @@ package lexer
 // Token类型
 type TokenType string
 
+
 const (
 	IDENT       TokenType = "IDENTIFIER"
 	NUMBER      TokenType = "NUMBER"
@@ -94,6 +95,7 @@ type Token struct {
     Value      string
     Error      string
 }
+
 
 // Lexer结构
 type Lexer struct {

@@ -1,1 +1,4 @@
 /1.txt
+.vscode/
+.DS_Store
+*.txt

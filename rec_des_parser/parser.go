@@ -2,7 +2,7 @@ package rec_des_parser
 
 import (
 	"fmt"
-	"go_compiler/lexer"
+	"mygo_c_compiler/lexer"
 )
 
 func New() *Parser {
