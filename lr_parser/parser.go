@@ -91,6 +91,10 @@ func (p *Parser) ParseGrammar(grammar string) error {
         left := matches[1]
         right := strings.Fields(matches[2])
 
+        if len(right) == 1 && right[0] == "ε" {
+            right = []string{}
+        }
+
         p.Productions = append(p.Productions, Production{
             Left:  left,
             Right: right,
@@ -175,25 +179,25 @@ func (p *Parser) BuildParsingTable() {
 }
 
 // 获取所有终结符
-func (p *Parser) getTerminals() []string {
-    terminals := make(map[string]bool)
+// func (p *Parser) getTerminals() []string {
+//     terminals := make(map[string]bool)
 
-    // 遍历所有产生式的右部
-    for _, prod := range p.Productions {
-        for _, symbol := range prod.Right {
-            if p.isTerminal(symbol) {
-                terminals[symbol] = true
-            }
-        }
-    }
+//     // 遍历所有产生式的右部
+//     for _, prod := range p.Productions {
+//         for _, symbol := range prod.Right {
+//             if p.isTerminal(symbol) {
+//                 terminals[symbol] = true
+//             }
+//         }
+//     }
 
-    // 转换为切片
-    result := make([]string, 0)
-    for terminal := range terminals {
-        result = append(result, terminal)
-    }
-    return result
-}
+//     // 转换为切片
+//     result := make([]string, 0)
+//     for terminal := range terminals {
+//         result = append(result, terminal)
+//     }
+//     return result
+// }
 
 // 执行语法分析
 func (p *Parser) Parse(tokens []lexer.Token) bool {
@@ -637,16 +641,28 @@ func (p *Parser) PrintItemSets(filename string) error {
     defer file.Close()
 
     for i, set := range p.ItemSets {
-        fmt.Fprintf(file, "I%d:\n", i)
+        fmt.Fprintf(file, "I%d:\\n", i)
+
+        // 使用map来合并相同的产生式
+        productions := make(map[string][]string)
+
         for _, item := range set.Items {
             // 构建带点的右部字符串
             rightPart := make([]string, len(item.Prod.Right)+1)
             copy(rightPart, item.Prod.Right[:item.Dot])
             rightPart[item.Dot] = "·"
             copy(rightPart[item.Dot+1:], item.Prod.Right[item.Dot:])
+            dottedProd := fmt.Sprintf("%s -> %s", item.Prod.Left, strings.Join(rightPart, " "))
 
-            fmt.Fprintf(file, "    %s -> %s, %s\n", item.Prod.Left, strings.Join(rightPart, " "), item.Lookahead)
+            // 添加展望符
+            productions[dottedProd] = append(productions[dottedProd], item.Lookahead)
         }
+
+        // 打印合并后的产生式
+        for prod, lookaheads := range productions {
+            fmt.Fprintf(file, "%s, [%s]\\n", prod, strings.Join(lookaheads, ", "))
+        }
+
         fmt.Fprintln(file)
     }
 
