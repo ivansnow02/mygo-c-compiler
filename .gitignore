@@ -2,3 +2,7 @@
 .vscode/
 .DS_Store
 *.txt
+*.svg
+*.csv
+*.dot
+*.png
